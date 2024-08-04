@@ -25,28 +25,26 @@ final class PhoneNumberModel {
     private(set) var fieldStyle: FieldStyle = .plain
     private(set) var placeholder = ""
     
-    private(set) var textDidChange: ((String) -> Void)?
-    
     init() {
         setup()
     }
     
-    func handleInput() {
-        let cleanNumber = text.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
-        var result = ""
+    func handleInput(_ input: String) -> String {
+        let cleanNumber = input.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        var output = ""
         var startIndex = cleanNumber.startIndex
         let endIndex = cleanNumber.endIndex
         
         for char in format where startIndex < endIndex {
             if char == "#" {
-                result.append(cleanNumber[startIndex])
+                output.append(cleanNumber[startIndex])
                 startIndex = cleanNumber.index(after: startIndex)
             } else {
-                result.append(char)
+                output.append(char)
             }
         }
         
-        text = result
+        return output
     }
     
     private func setup() {
@@ -90,9 +88,5 @@ extension PhoneNumberModel {
     
     func setPlaceholder(_ placeholder: String) {
         self.placeholder = placeholder
-    }
-    
-    func setTextDidChangeCallback(_ onTextChange: @escaping (String) -> Void) {
-        self.textDidChange = onTextChange
     }
 }
