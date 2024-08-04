@@ -1620,7 +1620,7 @@
     "flag": "🇹🇱",
     "code": "TL",
     "dial_code": "+670",
-    "pattern": "#",
+    "pattern": "## ### ###",
     "limit": 17
 }, {
     "id": "0222",
@@ -1636,7 +1636,7 @@
     "flag": "🇹🇰",
     "code": "TK",
     "dial_code": "+690",
-    "pattern": "#",
+    "pattern": "## ##",
     "limit": 17
 }, {
     "id": "0224",

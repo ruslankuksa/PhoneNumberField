@@ -12,7 +12,7 @@ public struct PhoneNumberField: View {
             
             TextField("Phone number", text: $model.text, prompt: Text(model.placeholder))
                 .onChange(of: model.text) {
-                    model.textDidChange?(model.text)
+                    model.textDidChange?(model.fullPhoneNumber)
                     model.handleInput()
                 }
         }
