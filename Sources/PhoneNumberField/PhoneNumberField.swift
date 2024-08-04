@@ -3,6 +3,7 @@ import SwiftUI
 public struct PhoneNumberField: View {
     
     @State private var model = PhoneNumberModel()
+    @Binding var input: String
     
     public var body: some View {
         HStack(spacing: 3) {
@@ -10,10 +11,10 @@ public struct PhoneNumberField: View {
                 Text(model.prefix)
             }
             
-            TextField("Phone number", text: $model.text, prompt: Text(model.placeholder))
-                .onChange(of: model.text) {
-                    model.textDidChange?(model.fullPhoneNumber)
+            TextField("Phone number", text: $model.phoneNumber, prompt: Text(model.placeholder))
+                .onChange(of: model.phoneNumber) {
                     model.handleInput()
+                    input = model.fullPhoneNumber
                 }
         }
         .padding(8)
@@ -55,11 +56,6 @@ extension PhoneNumberField {
         model.setPlaceholder(value)
         return self
     }
-    
-    public func textDidChange(_ onTextChange: @escaping (String) -> Void) -> PhoneNumberField {
-        model.setTextDidChangeCallback(onTextChange)
-        return self
-    }
 }
 
 #Preview {
@@ -67,15 +63,15 @@ extension PhoneNumberField {
         @State private var number = ""
         
         var body: some View {
-            PhoneNumberField()
-                .showPrefix(true)
-                .style(.rounded)
-                .borderColor(.blue)
-                .placeholder("Phone number")
-                .textDidChange { text in
-                    number = text
-                }
-                .padding(.horizontal)
+            VStack {
+                PhoneNumberField(input: $number)
+                    .showPrefix(true)
+                    .style(.rounded)
+                    .borderColor(.blue)
+                    .padding(.horizontal, 32)
+                
+                Text(number)
+            }
         }
     }
     return PreviewWrapper()

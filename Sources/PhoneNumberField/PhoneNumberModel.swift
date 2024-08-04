@@ -16,7 +16,7 @@ public enum FieldStyle {
 @Observable
 final class PhoneNumberModel {
     
-    var text = ""
+    var phoneNumber = ""
     
     private(set) var prefix = ""
     private(set) var format = ""
@@ -25,7 +25,10 @@ final class PhoneNumberModel {
     private(set) var fieldStyle: FieldStyle = .plain
     private(set) var placeholder = ""
     
-    private(set) var textDidChange: ((String) -> Void)?
+    var fullPhoneNumber: String {
+        guard showPrefix else { return phoneNumber }
+        return phoneNumber.isEmpty ? phoneNumber : "\(prefix) \(phoneNumber)"
+    }
     
     init() {
         setup()
@@ -37,27 +40,28 @@ final class PhoneNumberModel {
     }
     
     func handleInput() {
-        let cleanNumber = text.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
-        var result = ""
+        let cleanNumber = phoneNumber.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        var output = ""
         var startIndex = cleanNumber.startIndex
         let endIndex = cleanNumber.endIndex
         
         for char in format where startIndex < endIndex {
             if char == "#" {
-                result.append(cleanNumber[startIndex])
+                output.append(cleanNumber[startIndex])
                 startIndex = cleanNumber.index(after: startIndex)
             } else {
-                result.append(char)
+                output.append(char)
             }
         }
         
-        text = result
+        phoneNumber = output
     }
     
     private func setup() {
         guard let country = getCurrentCountryInfo() else { return }
         prefix = country.dialCode
         format = country.pattern
+        placeholder = country.pattern
     }
     
     private func getCurrentCountryInfo() -> CountryInfo? {
@@ -95,9 +99,5 @@ extension PhoneNumberModel {
     
     func setPlaceholder(_ placeholder: String) {
         self.placeholder = placeholder
-    }
-    
-    func setTextDidChangeCallback(_ onTextChange: @escaping (String) -> Void) {
-        self.textDidChange = onTextChange
     }
 }
