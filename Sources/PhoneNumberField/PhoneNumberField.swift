@@ -74,7 +74,6 @@ extension PhoneNumberField {
                 .placeholder("Phone number")
                 .textDidChange { text in
                     number = text
-                    debugPrint(number)
                 }
                 .padding(.horizontal)
         }
