@@ -11,9 +11,10 @@ public struct PhoneNumberField: View {
                 Text(model.prefix)
             }
             
-            TextField("Phone number", text: $input, prompt: Text(model.placeholder))
-                .onChange(of: input) {
-                    input = model.handleInput(input)
+            TextField("Phone number", text: $model.phoneNumber, prompt: Text(model.placeholder))
+                .onChange(of: model.phoneNumber) {
+                    model.handleInput()
+                    input = model.fullPhoneNumber
                 }
         }
         .padding(8)
@@ -62,15 +63,15 @@ extension PhoneNumberField {
         @State private var number = ""
         
         var body: some View {
-            PhoneNumberField(input: $number)
-                .showPrefix(true)
-                .style(.rounded)
-                .borderColor(.blue)
-                .placeholder("Phone number")
-                .onChange(of: number) {
-                    print(number)
-                }
-                .padding(.horizontal)
+            VStack {
+                PhoneNumberField(input: $number)
+                    .showPrefix(true)
+                    .style(.rounded)
+                    .borderColor(.blue)
+                    .padding(.horizontal, 32)
+                
+                Text(number)
+            }
         }
     }
     return PreviewWrapper()

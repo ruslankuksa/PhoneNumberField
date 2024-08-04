@@ -16,7 +16,7 @@ public enum FieldStyle {
 @Observable
 final class PhoneNumberModel {
     
-    var text = ""
+    var phoneNumber = ""
     
     private(set) var prefix = ""
     private(set) var format = ""
@@ -25,12 +25,17 @@ final class PhoneNumberModel {
     private(set) var fieldStyle: FieldStyle = .plain
     private(set) var placeholder = ""
     
+    var fullPhoneNumber: String {
+        guard showPrefix else { return phoneNumber }
+        return phoneNumber.isEmpty ? phoneNumber : "\(prefix) \(phoneNumber)"
+    }
+    
     init() {
         setup()
     }
     
-    func handleInput(_ input: String) -> String {
-        let cleanNumber = input.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+    func handleInput() {
+        let cleanNumber = phoneNumber.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
         var output = ""
         var startIndex = cleanNumber.startIndex
         let endIndex = cleanNumber.endIndex
@@ -44,13 +49,14 @@ final class PhoneNumberModel {
             }
         }
         
-        return output
+        phoneNumber = output
     }
     
     private func setup() {
         guard let country = getCurrentCountryInfo() else { return }
         prefix = country.dialCode
         format = country.pattern
+        placeholder = country.pattern
     }
     
     private func getCurrentCountryInfo() -> CountryInfo? {
