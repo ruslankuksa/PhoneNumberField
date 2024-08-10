@@ -34,11 +34,6 @@ final class PhoneNumberModel {
         setup()
     }
     
-    var fullPhoneNumber: String {
-        guard showPrefix else { return text }
-        return text.isEmpty ? text : "\(prefix) \(text)"
-    }
-    
     func handleInput() {
         let cleanNumber = phoneNumber.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
         var output = ""

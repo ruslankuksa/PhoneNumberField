@@ -20,7 +20,6 @@ let package = Package(
         .target(
             name: "PhoneNumberField",
             resources: [
-                .copy("Resources/phoneMasks.json"),
                 .copy("Resources/CountryNumbers.json")
             ]
         ),
