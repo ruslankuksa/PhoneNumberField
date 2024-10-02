@@ -3,7 +3,7 @@ import SwiftUI
 public struct PhoneNumberField: View {
     
     @State private var model = PhoneNumberModel()
-    @Binding var input: String
+    @Binding public var input: String
     
     public var body: some View {
         HStack(spacing: 3) {
