@@ -5,6 +5,10 @@ public struct PhoneNumberField: View {
     @State private var model = PhoneNumberModel()
     @Binding public var input: String
     
+    public init(input: Binding<String>) {
+        self._input = input
+    }
+    
     public var body: some View {
         HStack(spacing: 3) {
             if model.showPrefix {
